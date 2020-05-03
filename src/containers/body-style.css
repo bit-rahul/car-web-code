@@ -1,0 +1,152 @@
+body {
+    background-color: #eee;
+}
+
+.title {
+
+    margin-bottom : 50px;
+    text-transform: uppercase;
+}
+
+.card-block {
+    font-size  : 1em;
+    position   : relative;
+    margin-left: 20px;
+    padding    : 3em 3em 3em 0em;
+    border     : none;
+    box-shadow : none;
+}
+
+.card-title {
+    font-weight: 600 !important;
+}
+
+.card-b {
+    font-size  : 1em;
+    position   : relative;
+    margin-left: 20px;
+    padding    : 1.5em 0em 1.5em 0em !important;
+    border     : none;
+    box-shadow : none;
+}
+
+
+.card-b2 {
+    font-size  : 1em;
+    position   : relative;
+    margin-left: 20px;
+    padding    : 2em 0em 2em 0em !important;
+    border     : none;
+    box-shadow : none;
+}
+
+.table-bordered thead td,
+.table-bordered thead th {
+    border-bottom-width: 0px !important;
+}
+
+.mb-8 {
+    margin-bottom: 180px !important;
+}
+
+.mb-4 {
+    margin-bottom: 100px !important;
+}
+
+th {
+    font-size  : 12px !important;
+    font-weight: bolder !important;
+    color      : #697C90 !important;
+}
+
+.table-borderless tbody+tbody,
+.table-borderless td,
+.table-borderless th,
+.table-borderless thead th {
+    border: 0px !important;
+}
+
+.card-text {
+    color: #728496;
+}
+
+.head {
+    font-weight: bold !important;
+    font-size  : 24px !important;
+    color      : #3E3F42;
+}
+
+.p-0 {
+    padding-left: 0px !important;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none !important;
+    margin            : 0 !important;
+}
+
+.card {
+    font-size    : 1em;
+    overflow     : hidden;
+    padding      : 5;
+    border       : none;
+    border-radius: .28571429rem;
+    box-shadow   : 0 1px 3px 0 #d4d4d5, 0 0 0 1px #d4d4d5;
+    margin-top   : 15px;
+    margin-bottom: 40px;
+}
+
+.MuiGrid-spacing-xs-2>.MuiGrid-item {
+    padding: 34px !important;
+}
+
+.MuiGrid-justify-xs-space-between {
+    justify-content: space-between;
+    padding        : 34px !important;
+}
+
+.dis {
+    background-color: #D9D3D3 !important;
+    border-color    : #D9D3D3 !important;
+    cursor          : default !important;
+}
+
+div.sticky {
+    position: sticky;
+    bottom  : 10px;
+}
+
+.carousel-indicators li {
+    border-radius   : 12px;
+    width           : 12px;
+    height          : 12px;
+    background-color: #404040;
+}
+
+.carousel-indicators li {
+    border-radius   : 12px;
+    width           : 12px;
+    height          : 12px;
+    background-color: #404040;
+}
+
+.carousel-indicators .active {
+    background-color: white;
+    max-width       : 12px;
+    margin          : 0 3px;
+    height          : 12px;
+}
+
+.carousel-control-prev-icon {
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23fff' viewBox='0 0 8 8'%3E%3Cpath d='M5.25 0l-4 4 4 4 1.5-1.5-2.5-2.5 2.5-2.5-1.5-1.5z'/%3E%3C/svg%3E") !important;
+}
+
+.carousel-control-next-icon {
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23fff' viewBox='0 0 8 8'%3E%3Cpath d='M2.75 0l-1.5 1.5 2.5 2.5-2.5 2.5 1.5 1.5 4-4-4-4z'/%3E%3C/svg%3E") !important;
+}
+
+
+.btn {
+    margin-top: auto;
+}
