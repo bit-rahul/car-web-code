@@ -1,7 +1,7 @@
 This is my Car Booking app project based on React + Redux.
 
 To run this app locally we have to RUN :
-## git clone https://github.com/rahulsups/car-web.git
+## git clone https://github.com/rahulsups/car-web-code.git
 
 This app should be cloned into a car-web folder.
 
