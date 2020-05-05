@@ -5,7 +5,7 @@ To run this app locally we have to RUN :
 
 This app should be cloned into a car-web folder.
 
-## cd car-web
+## cd car-web-code
 into the folder.
 
 Then we have to RUN:
