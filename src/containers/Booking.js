@@ -80,7 +80,6 @@ export default class Booking extends React.Component {
         console.log("Booking", booking)        
     }
     componentDidMount(){
-        this.setInitial();
     }
     handleClose() {
         this.setState({ snackmsg: false })
@@ -136,7 +135,7 @@ export default class Booking extends React.Component {
     };
 
     render() {
-        // this.setInitial()
+        this.setInitial()
         console.log(this.props)
 
         const validate = values => {

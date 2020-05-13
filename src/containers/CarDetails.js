@@ -140,7 +140,7 @@ export default class CarDetails extends Component {
                     ?
                     (
                         <div>
-                    <div className="col-md-9 container mb-8">
+                    <div className="col-md-9 container mb-4">
                         <div className="card" style={{ height: "300px" }}>
                             <div className="row">
                                 <div className="col-md-7 p-0">
@@ -274,9 +274,20 @@ export default class CarDetails extends Component {
                                                     pathname: '/car-web/book-now',
                                                     state: this.state.car_details
                                                 }}>
+                                                    {
+                                                        this.state.car_details.booked == false
+                                                        ?
+                                                        <button type="button" className="btn btn-secondary" disabled>
+                                            Edit
+                                </button>
+                                :
                                 <button type="button" className="btn btn-secondary">
                                             Edit
                                 </button>
+
+
+                                                    }
+                                
                                 </Link>
                                 &nbsp; &nbsp;
                                 {this.state.car_details.booked == false
@@ -307,7 +318,7 @@ export default class CarDetails extends Component {
             
                     )
                     :
-                    <div style={{ margin: "2% 50% 2% 50%" }}>
+                    <div style={{ margin: "2% 50% 0% 50%" }}>
                                 <Ripple
                                     size= {500}
                                 />
