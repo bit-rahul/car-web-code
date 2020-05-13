@@ -16,10 +16,10 @@ export default class Carousel extends React.PureComponent {
         };
     }
     _onSelect = (active, direction) => {
-        console.log(`active=${active} && direction=${direction}`);
+        // console.log(`active=${active} && direction=${direction}`);
     };
     _visiableOnSelect = (active) => {
-        console.log(`visiable onSelect active=${active}`);
+        // console.log(`visiable onSelect active=${active}`);
     };
     _slideNext = () => {
         this.slider.current.slideNext();
@@ -70,7 +70,7 @@ export default class Carousel extends React.PureComponent {
                             </div>
                             <div>
                                 <img
-                                    // style={{ width: "100%", height: "300px" }}
+                                    style={{ width: "100%", height: "300px" }}
                                     src={this.props.img3}
                                 />
                                 {/* <div className="carousel-caption"></div> */}

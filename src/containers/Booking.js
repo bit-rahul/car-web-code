@@ -7,6 +7,8 @@ import img from '../components/assets/logo.PNG'
 import { Route, Link, BrowserRouter as Router } from 'react-router-dom'
 import { MDBContainer, MDBBtn, MDBModal, MDBModalBody, MDBModalHeader, MDBModalFooter } from 'mdbreact';
 import modalbg from '../components/assets/modalbg.JPG'
+import MuiAlert from '@material-ui/lab/Alert';
+import Snackbar from '@material-ui/core/Snackbar'
 import {
     TextField,
     Checkboxes,
@@ -25,6 +27,14 @@ import {
 } from '@material-ui/core';
 // Picker
 import DateFnsUtils from '@date-io/date-fns';
+import axios from 'axios'
+import api from '../server/apiMiddleWare'
+
+function Alert(props) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
+
+let initial = {}
 
 const theme = createMuiTheme({
     palette: {
@@ -37,109 +47,17 @@ const theme = createMuiTheme({
     }
 });
 
-
-const validate = values => {
-    const errors = {};
-    if (!values.name) {
-        errors.name = 'Required: Please enter your Full Name!';
-    }
-    if (!values.contact) {
-        errors.contact = 'Required: Please enter your Mobile Number!';
-    }
-    if (!values.issueDate) {
-        errors.issueDate = 'Required';
-    }
-    if (!values.returnDate) {
-        errors.returnDate = 'Required';
-    }
-    if (values.returnDate < values.issueDate) {
-        errors.returnDate = "Return Date can't be less than Issue Date!"
-    }
-
-    return errors;
-};
-
-const formFields = [
-    {
-        size: 6,
-        field: (
-            <TextField
-                label="Name"
-                name="name"
-                margin="none"
-                required={true}
-                InputLabelProps={{
-                    style: {
-                        fontWeight: 600
-                    }
-                }}
-            />
-        ),
-    },
-    {
-        size: 6,
-        field: (
-            <TextField
-                label="Contact Number"
-                name="contact"
-                margin="none"
-                required={true}
-                onInput={(e) => { e.target.value = e.target.value.replace(/[^0-9]/g, '') }}
-                inputProps={{
-                    maxLength: 10,
-                    minLength: 10
-                }}
-                min={10}
-                InputLabelProps={{
-                    style: {
-                        fontWeight: 600
-                    }
-                }}
-            />
-        ),
-    },
-    {
-        size: 6,
-        field: (
-            <DatePicker
-                name="issueDate"
-                margin="normal"
-                label="Issue Date"
-                required={true}
-                dateFunsUtils={DateFnsUtils}
-                InputLabelProps={{
-                    style: {
-                        fontWeight: 600
-                    }
-                }}
-            />
-        ),
-    },
-    {
-        size: 6,
-        field: (
-            <DatePicker
-                name="returnDate"
-                margin="normal"
-                label="Return Date"
-                required={true}
-                dateFunsUtils={DateFnsUtils}
-                InputLabelProps={{
-                    style: {
-                        fontWeight: 600
-                    }
-                }}
-            />
-        ),
-    },
-];
-
 export default class Booking extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
+            snackmsg: false,
             modal: false,
-            formData: {},
+            formData: {
+                booked: false,
+                booking_details: {
+                }
+            },
             id: this.props.history.location.state.id
         }
     }
@@ -153,32 +71,171 @@ export default class Booking extends React.Component {
             modal: val
         });
     }
+    setInitial(){
+        console.log("getting props", this.props)
+        let booking = {}
+        booking = this.props.location.state.booking_details
+        initial.name = booking.name
+        initial.phone = booking.phone
+        console.log("Booking", booking)        
+    }
+    componentDidMount(){
+        this.setInitial();
+    }
+    handleClose() {
+        this.setState({ snackmsg: false })
+    };
     onSubmit = async values => {
         const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
         await sleep(300);
-        var dater = values.returnDate.getDate();
-        var monthr = values.returnDate.getMonth() + 1;
-        var yearr = values.returnDate.getFullYear();
+        var dater = values.return_date.getDate();
+        var monthr = values.return_date.getMonth() + 1;
+        var yearr = values.return_date.getFullYear();
         var rdateStr = dater + "/" + monthr + "/" + yearr;
 
-        var datei = values.issueDate.getDate();
-        var monthi = values.issueDate.getMonth() + 1;
-        var yeari = values.issueDate.getFullYear();
+        var datei = values.issue_date.getDate();
+        var monthi = values.issue_date.getMonth() + 1;
+        var yeari = values.issue_date.getFullYear();
         var idateStr = datei + "/" + monthi + "/" + yeari;
 
 
         // rDate = rDate.slice(0,12);
-        values.returnDate = rdateStr
-        values.issueDate = idateStr
+        values.return_date = rdateStr
+        values.issue_date = idateStr
         // window.alert(JSON.stringify(values, 0, 2));
 
-        this.setState({
-            modal: true,
-            formData: values
+        console.log("FormData", values)
+
+        let formData = this.state.formData;
+
+        formData.booked = true;
+        formData.booking_details = values
+
+        let id = this.props.location.state._id
+        await axios
+        .put(api.URL + "cars/" + id, formData)
+        .then((res) => {
+            console.log("After Submit", res);
+            this.setState({
+                modal: true,
+                formData
+            })
         })
+        .catch((err) =>{
+            console.log("Error on Submission:", err)
+            this.setState({
+                snackmsg: true
+            })
+        })
+        // console.log("SubmitData", this.state.formData)
     };
+
+    handleChange = (e, values) => {
+        let params = [e.target.name]
+        values.params = e.target.value
+    };
+
     render() {
+        // this.setInitial()
         console.log(this.props)
+
+        const validate = values => {
+            const errors = {};
+            if (!values.name) {
+                errors.name = 'Required: Please enter your Full Name!';
+            }
+            if (!values.phone) {
+                errors.phone = 'Required: Please enter your Mobile Number!';
+            }
+            if (!values.issue_date) {
+                errors.issue_date = 'Required';
+            }
+            if (!values.return_date) {
+                errors.return_date = 'Required';
+            }
+            if (values.return_date < values.issue_date) {
+                errors.return_date = "Return Date can't be less than Issue Date!"
+            }
+
+            return errors;
+        };
+
+        const formFields = [
+            {
+                size: 6,
+                field: (
+                    <TextField
+                        label="Name"
+                        name="name"
+                        margin="none"
+                        defaultValue={this.state.name}
+                        required={true}
+                        InputLabelProps={{
+                            style: {
+                                fontWeight: 600
+                            }
+                        }}
+                    />
+                ),
+            },
+            {
+                size: 6,
+                field: (
+                    <TextField
+                        label="Contact Number"
+                        name="phone"
+                        margin="none"
+                        required={true}
+                        onInput={(e) => { e.target.value = e.target.value.replace(/[^0-9]/g, '') }}
+                        inputProps={{
+                            maxLength: 10,
+                            minLength: 10
+                        }}
+                        min={10}
+                        InputLabelProps={{
+                            style: {
+                                fontWeight: 600
+                            }
+                        }}
+                    />
+                ),
+            },
+            {
+                size: 6,
+                field: (
+                    <DatePicker
+                        name="issue_date"
+                        margin="normal"
+                        label="Issue Date"
+                        required={true}
+                        dateFunsUtils={DateFnsUtils}
+                        InputLabelProps={{
+                            style: {
+                                fontWeight: 600
+                            }
+                        }}
+                    />
+                ),
+            },
+            {
+                size: 6,
+                field: (
+                    <DatePicker
+                        name="return_date"
+                        margin="normal"
+                        label="Return Date"
+                        required={true}
+                        dateFunsUtils={DateFnsUtils}
+                        InputLabelProps={{
+                            style: {
+                                fontWeight: 600
+                            }
+                        }}
+                    />
+                ),
+            },
+        ];
+
         return (
             <ThemeProvider theme={theme}>
                 <MDBContainer>
@@ -204,9 +261,8 @@ export default class Booking extends React.Component {
                                             for the duration&nbsp; &nbsp; &nbsp;
                                         </span>
                                         <span style={{ fontSize: "12px", fontWeight: 600, }}>
-                                            {console.log("daaa", this.state.formData)}
-                                            {this.state.formData.issueDate}&nbsp;- &nbsp;
-                                        {this.state.formData.returnDate}
+                                            {this.state.formData.booking_details.issue_date}&nbsp;- &nbsp;
+                                        {this.state.formData.booking_details.return_date}
                                         </span>
                                     </div>
                                     <Link to={{
@@ -233,6 +289,11 @@ export default class Booking extends React.Component {
                         </MDBModalFooter> */}
                     </MDBModal>
                 </MDBContainer>
+                <Snackbar open={this.state.snackmsg} autoHideDuration={2000} onClose={this.handleClose.bind(this)}>
+                    <Alert onClose={this.handleClose.bind(this)} severity="error">
+                        An error occurred while booking. Please try again later! 
+                    </Alert>
+                </Snackbar>
 
                 <div className="page-container">
                     <div className="row">
@@ -253,6 +314,10 @@ export default class Booking extends React.Component {
                                 </div>
                             </div>
                             <Form
+                                initialValues= {{
+                                    name: initial.name,
+                                    phone: initial.phone
+                                }}
                                 onSubmit={this.onSubmit}
                                 validate={validate}
                                 render={({ handleSubmit, reset, submitting, pristine, values }) => (
